@@ -26,9 +26,9 @@ const Dashboard = () => {
       {/* 1. Hero Section */}
       <section>
         <DashboardHero 
-          userName={user?.firstName || 'User'} 
+          userName={user?.fullName ? user.fullName.split(' ')[0] : 'User'} 
           currentStreak={0} 
-          currentGoal="Complete Profile Setup"
+          currentGoal={user?.careerGoal || "Complete Profile Setup"}
           onContinueLearning={() => console.log('Continue learning clicked')}
         />
       </section>

@@ -7,12 +7,12 @@ import { useAuthStore } from '../store/authStore';
 
 const OnboardingSuccess = () => {
   const navigate = useNavigate();
-  const { user, login } = useAuthStore();
+  const { user, updateProfile } = useAuthStore();
 
-  const handleFinish = () => {
-    // Set user as fully onboarded so they can access the dashboard
+  const handleFinish = async () => {
+    // Set user as fully onboarded in the backend
     if (user) {
-      login({ ...user, isOnboarded: true });
+      await updateProfile({ isOnboarded: true });
     }
     navigate('/dashboard');
   };

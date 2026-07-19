@@ -23,9 +23,8 @@ const registerSchema = z.object({
 });
 
 const Register = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setTempEmail } = useAuthStore();
+  const { register: authRegister, isActionLoading, setTempEmail } = useAuthStore();
 
   const { register, handleSubmit, control, formState: { errors } } = useForm({
     resolver: zodResolver(registerSchema),
@@ -41,18 +40,18 @@ const Register = () => {
   const watchPassword = useWatch({ control, name: "password", defaultValue: "" });
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+    const result = await authRegister({
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password
+    });
+
+    if (result.success) {
       setTempEmail(data.email);
-      toast.success('Account created! Please verify your email.');
+      toast.success(result.message || 'Account created! Please verify your email.');
       navigate('/verify-email');
-    } catch (error) {
-      toast.error('Failed to create account.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(result.error || 'Failed to create account.');
     }
   };
 
@@ -116,7 +115,7 @@ const Register = () => {
           {errors.terms && <p className="text-xs text-destructive mt-1">{errors.terms.message}</p>}
         </div>
 
-        <Button type="submit" className="w-full mt-2 h-11" isLoading={isLoading}>
+        <Button type="submit" className="w-full mt-2 h-11" isLoading={isActionLoading}>
           Create Account
         </Button>
       </form>

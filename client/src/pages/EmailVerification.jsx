@@ -7,6 +7,7 @@ import { AuthCard } from '../components/auth/AuthCard';
 import { OTPInput } from '../components/auth/OTPInput';
 import { Button } from '../components/ui/Button';
 import { useAuthStore } from '../store/authStore';
+import api from '../services/api';
 
 const EmailVerification = () => {
   const [otp, setOtp] = useState('');
@@ -15,7 +16,7 @@ const EmailVerification = () => {
   const [countdown, setCountdown] = useState(30);
   
   const navigate = useNavigate();
-  const { tempEmail, login } = useAuthStore();
+  const { tempEmail, verifyEmail } = useAuthStore();
 
   useEffect(() => {
     // If user somehow gets here without registering/having a temp email, redirect
@@ -40,18 +41,17 @@ const EmailVerification = () => {
 
     setIsLoading(true);
     try {
-      // API integration point for backend verification
-      // await axios.post('/api/auth/verify', { email: tempEmail, otp });
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await verifyEmail(tempEmail, otp);
       
-      setIsSuccess(true);
-      
-      // Complete login and redirect after showing success state
-      setTimeout(() => {
-        login({ email: tempEmail, id: 'user_123', isVerified: true });
-        navigate('/onboarding/profile');
-      }, 2000);
-      
+      if (result.success) {
+        setIsSuccess(true);
+        // Redirect after showing success state
+        setTimeout(() => {
+          navigate('/onboarding/profile');
+        }, 2000);
+      } else {
+        toast.error(result.error || 'Invalid verification code.');
+      }
     } catch (error) {
       toast.error('Invalid verification code.');
     } finally {
@@ -64,9 +64,8 @@ const EmailVerification = () => {
     
     setIsLoading(true);
     try {
-      // API integration point to resend email
-      // await axios.post('/api/auth/resend', { email: tempEmail });
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Import api at the top if needed, but wait, api is in services/api. We should probably add resendVerification to authStore instead. Let's do that for consistency, but for now we can just use the authStore if I update it. Oh, let's just use api here. I will import it.
+      await api.post('/auth/resend-verification', { email: tempEmail });
       
       toast.success('Verification code resent!');
       setCountdown(30);

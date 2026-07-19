@@ -17,9 +17,8 @@ const loginSchema = z.object({
 });
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const { login, isActionLoading } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema),
@@ -31,20 +30,13 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For now, bypass real authentication and assume user needs onboarding
-      login({ email: data.email, id: '123', isOnboarded: false });
+    const result = await login({ email: data.email, password: data.password });
+    
+    if (result.success) {
       toast.success('Successfully logged in!');
-      // ProtectedRoute will automatically redirect to /onboarding/profile if isOnboarded is false
       navigate('/dashboard');
-    } catch (error) {
-      toast.error('Failed to login. Please check your credentials.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(result.error || 'Failed to login');
     }
   };
 
@@ -90,7 +82,7 @@ const Login = () => {
           </div>
         </div>
 
-        <Button type="submit" className="w-full mt-6 h-11" isLoading={isLoading}>
+        <Button type="submit" className="w-full mt-6 h-11" isLoading={isActionLoading}>
           Sign In
         </Button>
       </form>

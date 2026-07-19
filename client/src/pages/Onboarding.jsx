@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useOnboardingStore } from '../store/onboardingStore';
+import { useAuthStore } from '../store/authStore';
 import { ProgressStepper } from '../components/onboarding/ProgressStepper';
 import { SingleSelect, MultiSelect, SalarySlider } from '../components/onboarding/SelectionControls';
 import { FileUploadArea } from '../components/onboarding/FileUploadArea';
@@ -27,6 +28,8 @@ const Onboarding = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  const { updateProfile } = useAuthStore();
+
   const handleNext = () => {
     // Validation before proceeding
     if (currentStep === 1 && !careerGoal) return toast.error('Please select a career goal.');
@@ -40,9 +43,19 @@ const Onboarding = () => {
   const handleFinish = async () => {
     setIsSubmitting(true);
     try {
-      // Simulate API Submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      navigate('/onboarding/success');
+      const result = await updateProfile({
+        careerGoal,
+        experienceLevel,
+        skills,
+        targetCompanies,
+        // Optional: targetSalary, careerGoalsText could be added to schema later
+      });
+      
+      if (result.success) {
+        navigate('/onboarding/success');
+      } else {
+        toast.error(result.error || 'Failed to save profile.');
+      }
     } catch (error) {
       toast.error('Failed to complete onboarding.');
     } finally {

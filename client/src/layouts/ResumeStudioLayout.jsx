@@ -4,6 +4,7 @@ import { ChevronLeft, LayoutDashboard, History, Download, Eye } from 'lucide-rea
 import { Button } from '../components/ui/Button';
 import { Logo } from '../components/ui/Logo';
 import { useThemeStore } from '../store/themeStore';
+import Footer from '../components/landing/Footer';
 
 export const ResumeStudioLayout = () => {
   const navigate = useNavigate();
@@ -47,8 +48,11 @@ export const ResumeStudioLayout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-hidden flex relative">
-        <Outlet />
+      <main className={`flex-1 flex flex-col relative ${isEditing ? 'overflow-hidden' : 'overflow-y-auto w-full'}`}>
+        <div className="flex-1 w-full">
+          <Outlet />
+        </div>
+        {!isEditing && <Footer />}
       </main>
     </div>
   );

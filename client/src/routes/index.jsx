@@ -93,8 +93,6 @@ export const router = createBrowserRouter([
               { path: '/dashboard', element: <Suspense fallback={<SuspenseFallback />}><Dashboard /></Suspense> },
               { path: '/profile', element: <Suspense fallback={<SuspenseFallback />}><Profile /></Suspense> },
               { path: '/settings', element: <Suspense fallback={<SuspenseFallback />}><Settings /></Suspense> },
-              { path: '/resume/upload', element: <Suspense fallback={<SuspenseFallback />}><UploadResume /></Suspense> },
-              { path: '/resume/analyzer', element: <Suspense fallback={<SuspenseFallback />}><ResumeAnalyzer /></Suspense> },
               { path: '/mock-interview', element: <Suspense fallback={<SuspenseFallback />}><MockInterview /></Suspense> },
               { path: '/coding-interview', element: <Suspense fallback={<SuspenseFallback />}><CodingInterview /></Suspense> },
               { path: '/career-coach', element: <Suspense fallback={<SuspenseFallback />}><CareerCoach /></Suspense> },
@@ -108,6 +106,8 @@ export const router = createBrowserRouter([
             element: <ResumeStudioLayout />,
             children: [
               { path: '/resume', element: <Suspense fallback={<SuspenseFallback />}><ResumeDashboard /></Suspense> },
+              { path: '/resume/upload', element: <Suspense fallback={<SuspenseFallback />}><UploadResume /></Suspense> },
+              { path: '/resume/analyzer', element: <Suspense fallback={<SuspenseFallback />}><ResumeAnalyzer /></Suspense> },
               { path: '/resume/create', element: <Suspense fallback={<SuspenseFallback />}><CreateResume /></Suspense> },
               { path: '/resume/builder/:id', element: <Suspense fallback={<SuspenseFallback />}><ResumeStudio /></Suspense> },
             ],

@@ -4,6 +4,7 @@ import { useUIStore } from '../store/uiStore';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
 import { Logo } from '../components/ui/Logo';
+import Footer from '../components/landing/Footer';
 
 const sidebarLinks = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -96,10 +97,11 @@ const DashboardLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-4 lg:p-8">
-          <div className="mx-auto max-w-6xl">
+        <main className="flex-1 overflow-auto flex flex-col">
+          <div className="flex-1 p-4 lg:p-8 w-full max-w-6xl mx-auto">
             <Outlet />
           </div>
+          <Footer />
         </main>
       </div>
     </div>

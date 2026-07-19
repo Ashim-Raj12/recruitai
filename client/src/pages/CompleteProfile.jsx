@@ -43,15 +43,32 @@ const CompleteProfile = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // Simulate API call to save profile
-      // formData.append('avatar', avatar)
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Import api dynamically or add it to imports
+      const api = (await import('../services/api')).default;
+      
+      const payload = {
+        headline: data.headline,
+        location: data.location,
+        phone: data.phone,
+        github: data.githubUrl,
+        linkedin: data.linkedinUrl,
+        portfolio: data.portfolioUrl,
+        experienceLevel: data.currentStatus === 'working' ? 'Mid Level' : data.currentStatus === 'fresher' ? 'Entry Level' : 'Entry Level',
+        currentStatus: data.currentStatus,
+        preferredJobType: data.preferredJobType,
+        isOnboarded: true,
+        college: data.college,
+        degree: data.degree,
+        graduationYear: data.graduationYear,
+      };
+
+      await api.put('/users/profile', payload);
       
       toast.success('Profile saved successfully!');
       // Navigate to the next step, which is the AI Career Onboarding Wizard
       navigate('/onboarding/setup');
     } catch (error) {
-      toast.error('Failed to save profile.');
+      toast.error(error.response?.data?.message || 'Failed to save profile.');
     } finally {
       setIsLoading(false);
     }

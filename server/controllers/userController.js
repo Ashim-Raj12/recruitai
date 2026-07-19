@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Profile from '../models/Profile.js';
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -30,6 +31,53 @@ export const updateProfile = async (req, res) => {
       }
 
       const updatedUser = await user.save();
+
+      // Sync with Profile model
+      let profile = await Profile.findOne({ user: user._id });
+      if (!profile) {
+        profile = new Profile({ user: user._id });
+      }
+
+      // Map fields from User model to Profile model if they exist in req.body
+      if (req.body.phone) profile.personalInfo.phone = req.body.phone;
+      if (req.body.location) {
+        // assuming location is city/state combo, just put in city for now
+        profile.personalInfo.city = req.body.location;
+      }
+      
+      if (req.body.headline) profile.professionalInfo.headline = req.body.headline;
+      if (req.body.experienceLevel) {
+        profile.professionalInfo.yearsOfExperience = req.body.experienceLevel === 'Entry Level' ? 0 : 
+                                                     req.body.experienceLevel === 'Mid Level' ? 3 : 5;
+      }
+      if (req.body.currentStatus) profile.professionalInfo.employmentStatus = req.body.currentStatus;
+      
+      if (req.body.careerGoal) profile.careerGoals.careerGoal = req.body.careerGoal;
+      if (req.body.targetCompanies) profile.careerGoals.targetCompanies = req.body.targetCompanies;
+      
+      if (req.body.skills) {
+        // Just map basic string skills to name, without category for now
+        profile.skills = req.body.skills.map(skill => ({ name: skill, category: 'Other' }));
+      }
+      
+      if (req.body.github) profile.socialLinks.github = req.body.github;
+      if (req.body.linkedin) profile.socialLinks.linkedin = req.body.linkedin;
+      if (req.body.portfolio) profile.socialLinks.portfolio = req.body.portfolio;
+
+      if (req.body.college && req.body.degree && req.body.graduationYear) {
+        // Only push if education is empty to avoid duplicates on re-submits
+        if (profile.education.length === 0) {
+          profile.education.push({
+            institution: req.body.college,
+            degree: req.body.degree,
+            endYear: req.body.graduationYear,
+          });
+        }
+      }
+
+      // Simple completion percentage calculation for onboarding fields
+      profile.completionPercentage = 25; // Base 25% for onboarding
+      await profile.save();
 
       res.status(200).json({
         success: true,

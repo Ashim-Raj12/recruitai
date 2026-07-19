@@ -3,11 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+import { useAuthStore } from '../store/authStore';
 
 const OnboardingSuccess = () => {
   const navigate = useNavigate();
+  const { user, login } = useAuthStore();
 
-  // Optionally auto-redirect after some time, but a button is better for UX here.
+  const handleFinish = () => {
+    // Set user as fully onboarded so they can access the dashboard
+    if (user) {
+      login({ ...user, isOnboarded: true });
+    }
+    navigate('/dashboard');
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background relative overflow-hidden">
@@ -51,7 +59,7 @@ const OnboardingSuccess = () => {
         <Button 
           size="lg" 
           className="w-full text-base h-14 rounded-full shadow-lg shadow-primary/20 hover:scale-105 transition-transform"
-          onClick={() => navigate('/dashboard')}
+          onClick={handleFinish}
         >
           Enter Dashboard <ArrowRight className="ml-2" size={18} />
         </Button>

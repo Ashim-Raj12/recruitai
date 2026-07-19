@@ -36,9 +36,10 @@ const Login = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For now, bypass real authentication
-      login({ email: data.email, id: '123' });
+      // For now, bypass real authentication and assume user needs onboarding
+      login({ email: data.email, id: '123', isOnboarded: false });
       toast.success('Successfully logged in!');
+      // ProtectedRoute will automatically redirect to /onboarding/profile if isOnboarded is false
       navigate('/dashboard');
     } catch (error) {
       toast.error('Failed to login. Please check your credentials.');

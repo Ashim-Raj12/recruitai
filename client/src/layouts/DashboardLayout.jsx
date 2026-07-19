@@ -3,6 +3,7 @@ import { Menu, X, LayoutDashboard, User, Settings, FileText, Upload, BrainCircui
 import { useUIStore } from '../store/uiStore';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
+import { Logo } from '../components/ui/Logo';
 
 const sidebarLinks = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -42,9 +43,9 @@ const DashboardLayout = () => {
         }`}
       >
         <div className="flex h-14 items-center justify-between border-b px-4">
-          <Link to="/dashboard" className="flex items-center space-x-2">
-            <span className="font-bold text-lg">RecruitAI</span>
-          </Link>
+          <div className="flex items-center group mt-1">
+            <Logo />
+          </div>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-muted-foreground hover:text-foreground">
             <X size={20} />
           </button>

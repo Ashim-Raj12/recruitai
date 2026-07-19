@@ -19,6 +19,11 @@ const Contact = lazy(() => import('../pages/Contact'));
 const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const ForgotPassword = lazy(() => import('../pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('../pages/ResetPassword'));
+const EmailVerification = lazy(() => import('../pages/EmailVerification'));
+const CompleteProfile = lazy(() => import('../pages/CompleteProfile'));
+const Onboarding = lazy(() => import('../pages/Onboarding'));
+const OnboardingSuccess = lazy(() => import('../pages/OnboardingSuccess'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
@@ -64,14 +69,21 @@ export const router = createBrowserRouter([
               { path: '/login', element: <Suspense fallback={<SuspenseFallback />}><Login /></Suspense> },
               { path: '/register', element: <Suspense fallback={<SuspenseFallback />}><Register /></Suspense> },
               { path: '/forgot-password', element: <Suspense fallback={<SuspenseFallback />}><ForgotPassword /></Suspense> },
+              { path: '/reset-password', element: <Suspense fallback={<SuspenseFallback />}><ResetPassword /></Suspense> },
+              { path: '/verify-email', element: <Suspense fallback={<SuspenseFallback />}><EmailVerification /></Suspense> },
             ],
           },
         ],
       },
-      // Dashboard Layout Routes (Only for authenticated users)
+      // Protected Routes (Require Authentication)
       {
         element: <ProtectedRoute />,
         children: [
+          // Full-screen Protected Routes (e.g., Onboarding)
+          { path: '/onboarding/profile', element: <Suspense fallback={<SuspenseFallback />}><CompleteProfile /></Suspense> },
+          { path: '/onboarding/setup', element: <Suspense fallback={<SuspenseFallback />}><Onboarding /></Suspense> },
+          { path: '/onboarding/success', element: <Suspense fallback={<SuspenseFallback />}><OnboardingSuccess /></Suspense> },
+          // Dashboard Routes
           {
             element: <DashboardLayout />,
             children: [

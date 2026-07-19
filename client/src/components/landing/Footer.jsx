@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Globe, Mail, MessageSquare } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Forms';
+import { Logo } from '../ui/Logo';
 
 const Footer = () => {
   return (
@@ -10,12 +11,9 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4 group">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground group-hover:scale-105 transition-transform">
-                <span className="font-heading font-bold text-lg leading-none tracking-tighter">R</span>
-              </div>
-              <span className="font-heading font-bold text-xl tracking-tight">RecruitAI</span>
-            </Link>
+            <div className="mb-4">
+              <Logo />
+            </div>
             <p className="text-muted-foreground mb-6 max-w-sm leading-relaxed">
               Your AI-powered career copilot. We help you build better resumes, ace your interviews, and land your dream job faster.
             </p>

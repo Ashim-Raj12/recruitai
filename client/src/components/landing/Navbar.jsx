@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Moon, Sun } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Logo } from '../ui/Logo';
 import { useThemeStore } from '../../store/themeStore';
 import { cn } from '../../utils/cn';
 
@@ -37,12 +38,9 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground group-hover:scale-105 transition-transform">
-            <span className="font-heading font-bold text-lg leading-none tracking-tighter">R</span>
-          </div>
-          <span className="font-heading font-bold text-xl tracking-tight hidden sm:block">RecruitAI</span>
-        </Link>
+        <div className="flex items-center group">
+          <Logo />
+        </div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">

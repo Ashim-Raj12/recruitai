@@ -18,7 +18,7 @@ export const uploadResume = async (req, res) => {
     const fileUrl = "local_analysis_only";
     
     // 1. Extract Text
-    const rawText = await extractTextFromPDF(req.file.buffer);
+    const rawText = await extractTextFromPDF(req.file.buffer, req.file.originalname);
 
     // 2. AI Analysis (Hugging Face)
     const aiResult = await analyzeResumeWithHF(rawText);

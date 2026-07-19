@@ -47,6 +47,12 @@ app.get("/", (req, res) => {
     });
 });
 
+// Global Error Handler for unhandled errors (e.g., Multer)
+app.use((err, req, res, next) => {
+  console.error('GLOBAL ERROR CAUGHT:', err);
+  res.status(500).json({ success: false, message: err.message || 'Internal Server Error' });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

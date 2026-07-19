@@ -6,6 +6,7 @@ import RootLayout from '../layouts/RootLayout';
 import PublicLayout from '../layouts/PublicLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
+import ResumeStudioLayout from '../layouts/ResumeStudioLayout';
 
 // Wrappers
 import ProtectedRoute from './ProtectedRoute';
@@ -27,7 +28,9 @@ const OnboardingSuccess = lazy(() => import('../pages/OnboardingSuccess'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
-const Resume = lazy(() => import('../pages/Resume'));
+const ResumeDashboard = lazy(() => import('../pages/resume/ResumeDashboard'));
+const CreateResume = lazy(() => import('../pages/resume/CreateResume'));
+const ResumeStudio = lazy(() => import('../pages/resume/ResumeStudio')); // Will build next
 const UploadResume = lazy(() => import('../pages/UploadResume'));
 const ResumeAnalyzer = lazy(() => import('../pages/ResumeAnalyzer'));
 const MockInterview = lazy(() => import('../pages/MockInterview'));
@@ -90,7 +93,6 @@ export const router = createBrowserRouter([
               { path: '/dashboard', element: <Suspense fallback={<SuspenseFallback />}><Dashboard /></Suspense> },
               { path: '/profile', element: <Suspense fallback={<SuspenseFallback />}><Profile /></Suspense> },
               { path: '/settings', element: <Suspense fallback={<SuspenseFallback />}><Settings /></Suspense> },
-              { path: '/resume', element: <Suspense fallback={<SuspenseFallback />}><Resume /></Suspense> },
               { path: '/resume/upload', element: <Suspense fallback={<SuspenseFallback />}><UploadResume /></Suspense> },
               { path: '/resume/analyzer', element: <Suspense fallback={<SuspenseFallback />}><ResumeAnalyzer /></Suspense> },
               { path: '/mock-interview', element: <Suspense fallback={<SuspenseFallback />}><MockInterview /></Suspense> },
@@ -99,6 +101,15 @@ export const router = createBrowserRouter([
               { path: '/chat', element: <Suspense fallback={<SuspenseFallback />}><Chat /></Suspense> },
               { path: '/history', element: <Suspense fallback={<SuspenseFallback />}><History /></Suspense> },
               { path: '/jobs', element: <Suspense fallback={<SuspenseFallback />}><Jobs /></Suspense> },
+            ],
+          },
+          // Resume Studio Routes
+          {
+            element: <ResumeStudioLayout />,
+            children: [
+              { path: '/resume', element: <Suspense fallback={<SuspenseFallback />}><ResumeDashboard /></Suspense> },
+              { path: '/resume/create', element: <Suspense fallback={<SuspenseFallback />}><CreateResume /></Suspense> },
+              { path: '/resume/builder/:id', element: <Suspense fallback={<SuspenseFallback />}><ResumeStudio /></Suspense> },
             ],
           },
         ],
